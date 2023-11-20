@@ -1,5 +1,9 @@
 # https://adventofcode.com/2022/day/2
 
+N = 2
+IS = 'a'
+OS = 'b'
+
 shapes = {
     'X': [
         0,
@@ -26,7 +30,7 @@ shapes = {
 
 score = 0
 
-with open('src/inputs/02a.txt', 'r') as f:
+with open(f'src/inputs/{N:0>2}{IS}.txt', 'r') as f:
     for line in f.readlines():
         if not line.strip():
             continue
@@ -35,5 +39,5 @@ with open('src/inputs/02a.txt', 'r') as f:
         score += shapes[plr][0]
         score += shapes[plr][1][opp]
 
-with open('src/outputs/02b.txt', 'w') as f:
+with open(f'src/outputs/{N:0>2}{OS}.txt', 'w') as f:
     f.write(f'{score}')
