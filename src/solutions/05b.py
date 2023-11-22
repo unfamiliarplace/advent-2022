@@ -1,8 +1,12 @@
 # https://adventofcode.com/2022/day/5
 
-N = 5
-IS = 'a'
-OS = 'b'
+# My naming convention...
+import os
+fname = os.path.basename(__file__).strip('.py')
+N = int(fname[:2])
+S = fname[2]
+
+# Logic
 
 stacks = []
 moves = []
@@ -44,10 +48,10 @@ def do_moves():
         stacks[to] = stacks[fr][:n] + stacks[to]
         stacks[fr] = stacks[fr][n:]
 
-with open(f'src/inputs/{N:0>2}{IS}.txt', 'r') as f:
+with open(f'src/inputs/{N:0>2}.txt', 'r') as f:
     parse(f)
     do_moves()
 
-with open(f'src/outputs/{N:0>2}{OS}.txt', 'w') as f:
+with open(f'src/outputs/{N:0>2}{S}.txt', 'w') as f:
     tops = ''.join(s[0] for s in stacks)
     f.write(tops)

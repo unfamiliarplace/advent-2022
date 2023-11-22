@@ -1,11 +1,15 @@
 # https://adventofcode.com/2022/day/1
 
-N = 1
-IS = 'a'
-OS = 'a'
+# My naming convention...
+import os
+fname = os.path.basename(__file__).strip('.py')
+N = int(fname[:2])
+S = fname[2]
 
-with open(f'src/inputs/{N:0>2}{IS}.txt', 'r') as f:
+# Logic
+
+with open(f'src/inputs/{N:0>2}.txt', 'r') as f:
     pass
 
-with open(f'src/outputs/{N:0>2}{OS}.txt', 'w') as f:
+with open(f'src/outputs/{N:0>2}{S}.txt', 'w') as f:
     pass
