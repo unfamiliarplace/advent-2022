@@ -29,12 +29,11 @@ def get_score(n: int) -> bool:
 
     N = colwise[:row][::-1]
     S = colwise[row+1:]
-    W = rowwise[:col][::-1]
     E = rowwise[col+1:]
-    dirs = [N, S, E, W]
+    W = rowwise[:col][::-1]
 
     results = []
-    for dir in dirs:
+    for dir in [N, S, E, W]:
         for i in range(len(dir)):
 
             if dir[i] >= val:
