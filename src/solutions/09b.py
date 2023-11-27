@@ -61,15 +61,15 @@ def do_sequence(sequence: Sequence) -> None:
     for _ in range(sequence.n):
         segments[0].move(sequence.diffs)
         for i in range(1, 10):            
-            move_segment(i)
+            prev = segments[i - 1]
+            curr = segments[i]
+            move_segment(prev, curr)
         visited.add(segments[-1].sig())
 
 def adjacent(prev: Point, curr: Point) -> None:
     return (abs(prev.x - curr.x) < 2) and (abs(prev.y - curr.y) < 2)
 
-def move_segment(i: int) -> None:
-    prev = segments[i - 1]
-    curr = segments[i]
+def move_segment(prev: Point, curr: Point) -> None:
 
     if adjacent(prev, curr):
         return
