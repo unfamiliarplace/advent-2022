@@ -18,42 +18,20 @@ class Point:
     def __init__(self: Self, x: int, y: int) -> None:
         self.x, self. y = x, y
 
-    def get_mover(s: str) -> Callable:
-        if s == 'U':
-            return Point.N
-        elif s == 'D':
-            return Point.S
-        elif s == 'R':
-            return Point.E
-        elif s == 'L':
-            return Point.W
-    
-    def N(self: Self) -> None:
-        self.y += 1
-
-    def S(self: Self) -> None:
-        self.y -= 1
-
-    def E(self: Self) -> None:
-        self.x += 1
-
-    def W(self: Self) -> None:
-        self.x -= 1
-
-    def N_new(self: Self) -> Self:
-        return Point(self.x, self.y + 1)
-
-    def S_new(self: Self) -> Self:
-        return Point(self.x, self.y - 1)
-
-    def E_new(self: Self) -> Self:
-        return Point(self.x + 1, self.y)
-
-    def W_new(self: Self) -> Self:
-        return Point(self.x - 1, self.y)
-    
-    def diff(self: Self, other: Self) -> tuple[int]:
-        return other.x - self.x, other.y - self.y
+    def get_difference(direction: str) -> tuple[int, int]:
+        if direction == 'U':
+            return 0, 1
+        elif direction == 'D':
+            return 0, -1
+        elif direction == 'R':
+            return 1, 0
+        elif direction == 'L':
+            return -1, 0
+        
+    def move(self: Self, diffs: tuple[int]) -> None:
+        x_diff, y_diff = diffs
+        self.x += x_diff
+        self.y += y_diff
 
     def sig(self: Self) -> tuple[int]:
         return self.x, self.y
@@ -62,11 +40,11 @@ class Point:
         return f'{self.sig()}'
     
 class Sequence:
-    move: Callable
+    diffs: tuple[int]
     n: int
 
     def __init__(self: Self, direction: str, n: str) -> None:
-        self.move, self.n = Point.get_mover(direction), int(n)
+        self.diffs, self.n = Point.get_difference(direction), int(n)
 
 sequences = []
 
@@ -81,7 +59,7 @@ def parse_line(line: str) -> Sequence:
 
 def do_sequence(sequence: Sequence) -> None:
     for _ in range(sequence.n):
-        sequence.move(head)
+        head.move(sequence.diffs)
         move_tail()
 
 def head_tail_adjacent() -> None:
@@ -92,15 +70,22 @@ def move_tail() -> None:
         return
     
     else:
-        if (head.y - tail.y) > 1:
-            tail.N()
-        elif (tail.y - head.y) > 1:
-            tail.S()
-        if (head.x - tail.x) > 1:
-            tail.E()
-        elif (tail.x - head.x) > 1:
-            tail.W()
+        x_diff, y_diff = 0, 0
 
+        # Same column: change row
+        if head.x == tail.x:
+            y_diff = 1 if head.y > tail.y else -1
+
+        # Same row: change column
+        elif head.y == tail.y:
+            x_diff = 1 if head.x > tail.x else -1
+
+        # Neither: diagonal
+        else:
+            y_diff = 1 if head.y > tail.y else -1
+            x_diff = 1 if head.x > tail.x else -1
+        
+        tail.move((x_diff, y_diff))
         visited.add(tail.sig())
 
 with open(f'src/inputs/{N:0>2}.txt', 'r') as f:
